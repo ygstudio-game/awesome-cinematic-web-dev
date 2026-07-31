@@ -23,6 +23,20 @@ Prefer MagicUI / ReactBits / 21st.dev components over hand-rolled UI.
 Verify each section in the browser before moving to the next.
 ```
 
+## Installing this handbook's skill
+
+Antigravity is one of the "Universal" agents supported by Vercel's skills CLI, so the install from the root `README.md` works directly:
+
+```bash
+npx skills add ygstudio-game/awesome-cinematic-web-dev
+```
+
+Select **Antigravity** (and/or **Antigravity CLI** if you use both the IDE and its CLI) at the agent-picker prompt, choose **Project** scope, and confirm. It installs to `.agents/skills/cinematic-web-dev/` in the current project — Antigravity discovers skills there automatically via their description, so no separate registration step is needed.
+
+Once installed, just ask Antigravity for what you want ("build a cinematic Apple-style product page") — it should pick up the skill on its own from the description match. If it doesn't seem to be using it, point it at the file directly: "follow the procedure in `.agents/skills/cinematic-web-dev/SKILL.md`."
+
+If the installer reports `EBUSY: resource busy or locked` on a file under `.agents/skills/`, close Antigravity (or any process with that project open) first, then re-run the same install command — it only needs to retry the agents that failed.
+
 ## Typical workflow
 
 > "Scaffold a Next.js + Tailwind project, install Motion.dev/Lenis/React Three Fiber, then build the hero section from this prompt: [paste from 09-Prompts/AppleStyle.md]. Open it in the browser and check it renders correctly before continuing."
