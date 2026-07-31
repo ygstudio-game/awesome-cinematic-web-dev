@@ -13,12 +13,15 @@ If the user is starting from a bare idea (no brand assets, no design direction y
 - One active `<canvas>` (WebGL context) on screen at a time.
 - Preload only the next section's assets, never the whole page's up front.
 - Every animated component must respect `prefers-reduced-motion` with a real fallback (not just disabled motion + layout jank).
-- Video over GIF: MP4/WebM only.
+- Pre-extracted WebP frame sequence on `<canvas>` over binding scroll to `HTMLVideoElement.currentTime` — see `FRAME_SEQUENCE_PIPELINE.md`. Video over GIF elsewhere: MP4/WebM only.
+- Never place `overflow-x-hidden` (or `overflow-hidden`) on a parent of a `position: sticky` scrollytelling section — sticky silently breaks.
 - No GSAP unless Motion.dev cannot achieve the effect — check `01-Setup/GSAP.md` before adding it.
 - No Spline unless the project needs non-developer scene editing — check `06-3D/Spline.md` before adding it.
 - Cap R3F `dpr` to `[1, 2]`.
 - Lighthouse mobile target: 90+ with heavy 3D, 95+ without. Re-check after every new heavy section, not just at the end (`08-Optimization/Lighthouse.md`).
 - Prefer existing components from `04-UI/` (MagicUI/ReactBits/Aceternity/21st.dev) over hand-rolled UI.
+- No raw, untextured Three.js primitives (`TorusGeometry`, `OctahedronGeometry`, `BoxGeometry`) as a hero/product visual, no generic SaaS pill badges — see `EDITORIAL_DESIGN_SYSTEM.md`.
+- Windows dev servers: exclude binary media from Vite HMR watching (`watch: { ignored: ['**/*.mp4', '**/sequence/**'] }`) to avoid `EBUSY` file-lock errors.
 
 ## Default stack
 
@@ -52,6 +55,10 @@ Full install commands: `01-Setup/*.md` (one file per library — NextJS, Tailwin
 | Hero / Pricing / Contact section code | `10-Templates/<Section>.md` |
 | Deployment | `11-Deployment/Vercel.md` or `11-Deployment/Cloudflare.md` |
 | Any official link/version check | `Resources.md` |
+| Checkpoint/gatekeeping protocol before writing any code | `HARD_CHECKPOINTS.md` |
+| Typography, color tokens, layout, banned "AI template" UI patterns | `EDITORIAL_DESIGN_SYSTEM.md` |
+| Scroll-scrubbed hero/product reveal (WebP frames on canvas, not `<video>`) | `FRAME_SEQUENCE_PIPELINE.md` |
+| Real-world failure modes this skill was hardened against | `SKILL_IMPROVEMENTS.md` |
 | Building from a bare idea (brand/creative decisions not yet made) | `12-AI-Cinematic-Pipeline/README.md` — start there instead of `09-Prompts/` |
 | Analyzing a brand from a raw idea | `12-AI-Cinematic-Pipeline/02-Brand-Analysis.md` |
 | Producing the project's single source-of-truth creative direction | `12-AI-Cinematic-Pipeline/03-Creative-Director.md` |
@@ -63,18 +70,16 @@ Full install commands: `01-Setup/*.md` (one file per library — NextJS, Tailwin
 | Rendering a scroll-scrubbed canvas frame sequence | `12-AI-Cinematic-Pipeline/10-Canvas-Animation.md` |
 | Generating the full site from a completed Creative Brief | `12-AI-Cinematic-Pipeline/11-Website-Generation.md` |
 
-## Build procedure
+## Build procedure — 4 Mandatory Gatekeeping Checkpoints
 
-**If the user already has brand direction / just wants a coded site:**
+Full protocol, diagram, and anti-patterns: `HARD_CHECKPOINTS.md`. Summary — run in order, do not skip or collapse:
 
-1. Confirm/write a project `CLAUDE.md` (or equivalent) with the hard constraints above plus the chosen stack — do this before generating any code.
-2. Scaffold per `10-Templates/FolderStructure.md`.
-3. Connect Playwright MCP + shadcn MCP before building UI (`03-MCP/`).
-4. Build one section at a time: generate → open in browser via MCP → verify → next section. Do not generate the whole page in one pass.
-5. After adding any 3D/video/heavy-animation section, re-run a Lighthouse check.
-6. Deploy per `11-Deployment/`.
+1. **Checkpoint 1 — Brand Strategy & User Brainstorming (🛑 HARD STOP).** If the user has no brand/creative direction yet, run `12-AI-Cinematic-Pipeline/` (Brand Analysis → Creative Brief → Storyboard). Present the concept/palette/storyboard and get explicit user approval. **Do not write any project code before this.**
+2. **Checkpoint 2 — Environment & MCP Handshake.** Connect Playwright MCP + shadcn MCP (`03-MCP/`). Write project `CLAUDE.md` (or equivalent) with the hard constraints above plus the chosen stack. Scaffold per `10-Templates/FolderStructure.md`.
+3. **Checkpoint 3 — Hero Section Only + User Review (🛑 HARD STOP).** Build only the Hero section, verify visually via MCP screenshot, apply `EDITORIAL_DESIGN_SYSTEM.md`. **Do not generate section 2 before the user approves this.**
+4. **Checkpoint 4 — Incremental Section-by-Section Lock.** Build remaining sections one at a time, verifying and getting approval before each next one. Never scaffold 5+ sections in one turn. Re-run Lighthouse after every heavy section. Deploy per `11-Deployment/` only once the final section is approved.
 
-**If the user is starting from a bare idea:** run `12-AI-Cinematic-Pipeline/` first (Brand Analysis → Creative Brief → Storyboard → prompts → generated media → optimization → frame extraction), then proceed through steps 1-6 above using `12-AI-Cinematic-Pipeline/11-Website-Generation.md` in place of a `09-Prompts/` prompt — it consumes the Creative Brief the pipeline produced instead of a bare site-type description.
+If the user is starting from a bare idea, Checkpoint 1 *is* the pipeline run; use `12-AI-Cinematic-Pipeline/11-Website-Generation.md` in place of a `09-Prompts/` prompt in Checkpoint 2 — it consumes the Creative Brief the pipeline produced.
 
 ## Prompt-writing rule
 

@@ -74,6 +74,10 @@ You want a marketing site, product page, portfolio, or agency site that feels li
 awesome-cinematic-web-dev/
 ├── README.md              you are here
 ├── Resources.md            every official link in one place + inspiration sources
+├── HARD_CHECKPOINTS.md     4 mandatory gatekeeping checkpoints (brand approval, hero-only review) — read before building
+├── EDITORIAL_DESIGN_SYSTEM.md  typography, color tokens, layout, and the "AI template look" banned-UI list
+├── FRAME_SEQUENCE_PIPELINE.md  OpenCV WebP frame extraction + HTML5 canvas scroll-scrub engine
+├── SKILL_IMPROVEMENTS.md   audit of real-world failure modes these files were hardened against
 │
 ├── 01-Setup/                what your agent installs/configures for each core library
 ├── 02-AI/                    Claude Code / Antigravity / Cursor / Windsurf / Codex — how to direct each one
@@ -138,14 +142,14 @@ You don't have to pick just one — many people use Claude Code or Antigravity f
 
 ## How to actually use this repo
 
-1. **Read `08-Optimization/Lighthouse.md`** — even briefly — before you start, so you know what "fast" means here and can bake it into your first instruction rather than fixing it after the site looks good and scores 40.
-2. **Tell your agent which stack to use** — [the default below](#the-recommended-default-stack) is right for most projects; point your agent at `01-Setup/` if it needs install details for any piece.
-3. **Have it scaffold using `10-Templates/FolderStructure.md`** so components, 3D scenes, and storytelling code land in predictable places instead of wherever the agent decides that session.
-4. **Give it a project conventions file** (`CLAUDE.md`, `.cursorrules`, or equivalent) — see [Getting the best output](#getting-the-best-output-from-your-ai-agent). This is the single highest-leverage thing you can hand your agent.
-5. **Build one section at a time**, handing it prompts from `09-Prompts/` and pointing it at `04-UI/`, `05-Animation/`, `06-3D/`, `07-Storytelling/` for the pieces each section needs.
-6. **Have it show you its work in the browser**, not just describe the code — set up MCP (`03-MCP/`) so it can actually check.
-7. **Ask for a Lighthouse check** after every new heavy section (video, 3D, big animation) — not just once at the end.
-8. **Have it deploy** per `11-Deployment/` once you're happy.
+This repo enforces **4 Mandatory Gatekeeping Checkpoints** (full protocol: [`HARD_CHECKPOINTS.md`](HARD_CHECKPOINTS.md)) so your agent can't skip straight to a pile of unreviewed code — two of them are hard stops where your agent must wait for your explicit approval before continuing:
+
+1. 🛑 **Checkpoint 1 — Brand strategy approval.** If you haven't given brand direction yet, your agent runs `12-AI-Cinematic-Pipeline/` first and presents the concept/palette/storyboard for you to approve. **No project code gets written before this.**
+2. **Checkpoint 2 — Environment & MCP handshake.** Connect Playwright, shadcn, MagicUI, and ReactBits MCP (`03-MCP/`), install a taste/UX skill (see point 6 below), write the conventions file, scaffold per `10-Templates/FolderStructure.md`.
+3. 🛑 **Checkpoint 3 — Hero-only review.** Your agent builds *only* the Hero section, shows you a screenshot, and waits for your approval before touching section 2.
+4. **Checkpoint 4 — One section at a time.** Every remaining section is built, verified in the browser, and approved before the next one starts — never 3+ sections in a single pass. Lighthouse gets re-checked after every heavy section, and deployment (`11-Deployment/`) happens only once the last section is approved.
+
+Read `08-Optimization/Lighthouse.md` before you start so you know what "fast" means here, and see [Getting the best output](#getting-the-best-output-from-your-ai-agent) for how to make each checkpoint actually produce a good result rather than a rubber-stamped one.
 
 ## Getting the best output from your AI agent
 
@@ -172,7 +176,7 @@ Stack: Next.js App Router, Tailwind v4, Motion.dev, React Three Fiber + Drei, Le
 
 ### 3. Ask for one section at a time, and look at each before continuing
 
-Don't ask for the whole site in one message. A bad structural call in the hero compounds through every section generated to match it — catching it immediately is far cheaper than catching it at the end.
+Don't ask for the whole site in one message — this is enforced, not just advised, via the 4 checkpoints in [`HARD_CHECKPOINTS.md`](HARD_CHECKPOINTS.md). A bad structural call in the hero compounds through every section generated to match it — catching it immediately, at Checkpoint 3, is far cheaper than catching it at the end. If your agent (or the skill package) proposes generating 3+ sections in one pass, that's the "Greedy Completion Bias" failure mode this repo was hardened against — stop it and go back to one section at a time.
 
 ### 4. Make sure your agent can actually see what it built
 
@@ -184,7 +188,13 @@ MagicUI MCP, shadcn MCP, and ReactBits MCP (`03-MCP/`) give your agent live acce
 
 ### 6. If your tool supports skills, load taste/UX ones before generating
 
-Claude Skills or equivalent custom rule sets (`02-AI/Skills.md`) bias the *first draft* toward good design decisions — cheaper than asking your agent to fix a mediocre one afterward.
+Claude Skills or equivalent custom rule sets (`02-AI/Skills.md`) bias the *first draft* toward good design decisions — cheaper than asking your agent to fix a mediocre one afterward. Concretely, at Checkpoint 2, install:
+
+- **A taste skill** (one at a time — stacking multiple pulls output in conflicting directions), e.g. `impeccable`, `design-taste-frontend`, or `high-end-visual-design` if your tool has them available.
+- **UI/UX Pro Max** (`02-AI/UIUXProMax.md`) for a committed style/color/typography system generated once, up front, rather than re-derived per section.
+- Optionally a **domain-specific style skill** (e.g. `emil-design-eng`) only when you want that one named designer's voice — don't combine with a general taste skill.
+
+Without one of these, technical compliance (fast, one canvas, respects reduced-motion) still doesn't stop the "AI template look" — generic pill badges, centered-text-over-video heroes, identical 3-card grids. See [`EDITORIAL_DESIGN_SYSTEM.md`](EDITORIAL_DESIGN_SYSTEM.md) for the specific banned patterns and the editorial alternative (asymmetrical split-screens, serif/mono typographic contrast).
 
 ### 7. Re-check performance after every new heavy section
 
@@ -225,8 +235,10 @@ Bake these into your conventions file so your agent never has to be reminded per
 - One active `<canvas>` (WebGL context) on screen at a time.
 - Preload only what the *next* section needs — never the whole page's assets up front.
 - Respect `prefers-reduced-motion`; ship a simpler, motion-free fallback, don't just disable animation and leave layout jank.
-- MP4/WebM over GIF, always.
+- Scroll-scrubbed reveals (product/hero) use a pre-extracted WebP frame sequence on `<canvas>`, not `video.currentTime` binding — binding to a raw `<video>` element stutters and drops frames on scroll. See [`FRAME_SEQUENCE_PIPELINE.md`](FRAME_SEQUENCE_PIPELINE.md). MP4/WebM over GIF elsewhere, always.
+- Never put `overflow-x-hidden` (or `overflow-hidden`) on a parent of a `position: sticky` scrollytelling section — sticky breaks silently.
 - Target Lighthouse 90+ on mobile for a site with heavy 3D; 95+ if there's no 3D on the critical path.
+- On Windows, exclude binary media from Vite's HMR watcher (`watch: { ignored: ['**/*.mp4', '**/sequence/**'] }`) or you'll hit `EBUSY` file-lock errors mid-build.
 
 See `08-Optimization/` for the mechanics behind each rule.
 
