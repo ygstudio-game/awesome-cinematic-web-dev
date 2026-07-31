@@ -14,13 +14,16 @@ The user asks for a landing page, product showcase, portfolio, agency site, or S
 ## Procedure
 
 1. **Read `references/AGENTS.md` first.** It is the compact manifest: hard constraints, default stack, and a task→file lookup table into the rest of `references/`. Do not guess stack choices or install commands from memory — look them up there.
-2. **Determine site type** and pull the matching ready-to-use prompt from `references/09-Prompts/` (AppleStyle, SaaS, LandingPage, Portfolio, Agency) — use it as-is or adapt it, but keep its structure (exact reference, exact stack, explicit exclusions, architecture expectations). Pattern explained in `references/02-AI/Prompts.md`.
-3. **Write a project conventions file** (`CLAUDE.md` or equivalent) in the target project before generating any code, using the hard constraints from `references/AGENTS.md`.
-4. **Scaffold** per `references/10-Templates/FolderStructure.md`.
-5. **Connect MCP** (Playwright + shadcn at minimum) per `references/03-MCP/` so you can verify sections visually as you build, not just generate code blind.
-6. **Build one section at a time** — hero, then next section, verifying each in the browser before continuing. Pull component sources from `references/04-UI/`, animation patterns from `references/05-Animation/`, 3D from `references/06-3D/`, scroll storytelling from `references/07-Storytelling/` (including `ScrollWorld.md` if the user wants a fully AI-generated scroll-scrubbed world flythrough rather than hand-built assets).
-7. **Re-check performance** (`references/08-Optimization/Lighthouse.md`) after every new heavy section — 3D, video, or animation-dense component.
-8. **Deploy** per `references/11-Deployment/` once approved.
+2. **Decide entry point:**
+   - User already has brand direction and just wants a coded site → go to step 3.
+   - User is starting from a bare idea with no brand/creative direction yet → run `references/12-AI-Cinematic-Pipeline/` first (Brand Analysis → Creative Brief → Storyboard → image/video prompts → generated media → optimization → frame extraction), then use its `11-Website-Generation.md` in place of step 3 below — it's a superset of a `09-Prompts/` prompt that additionally consumes the Creative Brief and generated media.
+3. **Determine site type** and pull the matching ready-to-use prompt from `references/09-Prompts/` (AppleStyle, SaaS, LandingPage, Portfolio, Agency) — use it as-is or adapt it, but keep its structure (exact reference, exact stack, explicit exclusions, architecture expectations). Pattern explained in `references/02-AI/Prompts.md`.
+4. **Write a project conventions file** (`CLAUDE.md` or equivalent) in the target project before generating any code, using the hard constraints from `references/AGENTS.md`.
+5. **Scaffold** per `references/10-Templates/FolderStructure.md`.
+6. **Connect MCP** (Playwright + shadcn at minimum) per `references/03-MCP/` so you can verify sections visually as you build, not just generate code blind.
+7. **Build one section at a time** — hero, then next section, verifying each in the browser before continuing. Pull component sources from `references/04-UI/`, animation patterns from `references/05-Animation/`, 3D from `references/06-3D/`, scroll storytelling from `references/07-Storytelling/` (including `ScrollWorld.md` if the user wants a fully AI-generated scroll-scrubbed world flythrough rather than hand-built assets, or `references/12-AI-Cinematic-Pipeline/10-Canvas-Animation.md` if the hero uses a frame sequence from the pipeline).
+8. **Re-check performance** (`references/08-Optimization/Lighthouse.md`) after every new heavy section — 3D, video, or animation-dense component.
+9. **Deploy** per `references/11-Deployment/` once approved.
 
 ## Hard constraints (non-negotiable, apply regardless of how the user phrased the request)
 
@@ -52,7 +55,10 @@ references/
 ├── 08-Optimization/                 Lighthouse, lazy loading, video, images
 ├── 09-Prompts/                       ready-to-use prompts per site type
 ├── 10-Templates/                      folder structure + Hero/Pricing/Contact code
-└── 11-Deployment/                      Vercel, Cloudflare
+├── 11-Deployment/                      Vercel, Cloudflare
+└── 12-AI-Cinematic-Pipeline/            idea → brand analysis → creative brief → storyboard →
+                                          AI image/video prompts → generated media → optimized
+                                          frame sequence → website generation → deployment
 ```
 
 ## Notes

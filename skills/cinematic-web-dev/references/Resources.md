@@ -46,6 +46,21 @@
 - Lighthouse — https://developer.chrome.com/docs/lighthouse
 - ffmpeg — https://ffmpeg.org
 
+## AI Cinematic Pipeline (image/video generation)
+
+Full list: `12-AI-Cinematic-Pipeline/Resources.md`. Summary:
+- Google Whisk — https://labs.google/whisk
+- FLUX — https://blackforestlabs.ai
+- Imagen — https://deepmind.google/technologies/imagen
+- Midjourney — https://www.midjourney.com
+- Stable Diffusion — https://stability.ai
+- Google Veo — https://deepmind.google/technologies/veo
+- Kling — https://klingai.com
+- Runway — https://runwayml.com
+- Pika — https://pika.art
+- Luma — https://lumalabs.ai
+- Hailuo — https://hailuoai.video
+
 ## Deployment
 - Vercel — https://vercel.com/docs
 - Cloudflare Pages — https://developers.cloudflare.com/pages

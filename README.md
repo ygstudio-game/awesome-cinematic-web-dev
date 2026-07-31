@@ -18,6 +18,7 @@ Next.js → Tailwind → Motion.dev → Lenis → React Three Fiber + Drei → T
 - [Install as a skill (recommended)](#install-as-a-skill-recommended)
 - [Who this is for](#who-this-is-for)
 - [Repo structure](#repo-structure)
+- [The AI Cinematic Pipeline — from bare idea to deployed site](#the-ai-cinematic-pipeline--from-bare-idea-to-deployed-site)
 - [Quick start — tell your agent to build this](#quick-start--tell-your-agent-to-build-this)
 - [Which AI tool should you use](#which-ai-tool-should-you-use)
 - [How to actually use this repo](#how-to-actually-use-this-repo)
@@ -75,8 +76,24 @@ awesome-cinematic-web-dev/
 ├── 08-Optimization/                 the performance rules to bake into every instruction you give your agent
 ├── 09-Prompts/                       full, ready-to-paste prompts per site type — start here if you're in a hurry
 ├── 10-Templates/                      reference code your agent can be pointed at or asked to match
-└── 11-Deployment/                      how your agent ships the finished site
+├── 11-Deployment/                      how your agent ships the finished site
+└── 12-AI-Cinematic-Pipeline/            idea → brand analysis → creative brief → storyboard → AI-generated
+                                          media → website — for starting from a bare idea, not just a prompt
 ```
+
+## The AI Cinematic Pipeline — from bare idea to deployed site
+
+Everything above assumes you already know roughly what the site should look like and just need a prompt to hand your agent. If you're starting from nothing but an idea — no brand direction, no visual concept yet — use [`12-AI-Cinematic-Pipeline/`](12-AI-Cinematic-Pipeline/) instead. It's a full workflow where AI acts as brand strategist and creative director, not just implementer:
+
+```
+Idea → Brand Analysis → Creative Brief (single source of truth) → Storyboard
+     → Image/Video prompts → Generate media (any provider) → Optimize → Extract frames
+     → Generate website → Deploy
+```
+
+The key architectural idea: every step reads from one **Creative Brief** instead of each step reinventing the brand on its own — the same reason this handbook has you write a conventions file for coding, applied to creative decisions too. See the module's own [`README.md`](12-AI-Cinematic-Pipeline/README.md) for the full workflow, and [`ROADMAP.md`](12-AI-Cinematic-Pipeline/ROADMAP.md) for why video generation is a manual, provider-agnostic step for now.
+
+Once the pipeline produces a Creative Brief and generated media, its `11-Website-Generation.md` prompt takes over — it's a superset of the prompts in `09-Prompts/` that additionally consumes everything the pipeline produced.
 
 ## Quick start — tell your agent to build this
 
@@ -174,6 +191,7 @@ One new 3D scene, video, or animation-heavy component can tank your Lighthouse s
 | Portfolio | `09-Prompts/Portfolio.md` | Editorial/cinematic, ScrollyVideo + text-effect components |
 | Agency / flagship brand site | `09-Prompts/Agency.md` | One signature R3F + Theatre.js moment, Scrollama case studies |
 | Full AI-generated world flythrough | `07-Storytelling/ScrollWorld.md` | An installable agent skill that generates the 3D art and camera flight for you — no hand-authored assets needed |
+| Starting from a bare idea, no brand direction yet | `12-AI-Cinematic-Pipeline/README.md` | AI drives brand analysis, creative direction, and storyboard before any prompt gets written |
 
 ## The recommended default stack
 
