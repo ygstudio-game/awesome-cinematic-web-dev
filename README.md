@@ -15,20 +15,29 @@ Next.js → Tailwind → Motion.dev → Lenis → React Three Fiber + Drei → T
 
 ## Table of contents
 
-- [Install as a skill (recommended)](#install-as-a-skill-recommended)
-- [Who this is for](#who-this-is-for)
-- [Repo structure](#repo-structure)
-- [The AI Cinematic Pipeline — from bare idea to deployed site](#the-ai-cinematic-pipeline--from-bare-idea-to-deployed-site)
-- [Quick start — tell your agent to build this](#quick-start--tell-your-agent-to-build-this)
-- [Which AI tool should you use](#which-ai-tool-should-you-use)
-- [How to actually use this repo](#how-to-actually-use-this-repo)
-- [Getting the best output from your AI agent](#getting-the-best-output-from-your-ai-agent)
-- [Choosing a stack by project type](#choosing-a-stack-by-project-type)
-- [The recommended default stack](#the-recommended-default-stack)
-- [Non-negotiable performance rules](#non-negotiable-performance-rules)
-- [Recommended build order](#recommended-build-order)
-- [Troubleshooting / FAQ](#troubleshooting--faq)
-- [Keeping this handbook current](#keeping-this-handbook-current)
+- [Awesome Cinematic Web Dev](#awesome-cinematic-web-dev)
+  - [Table of contents](#table-of-contents)
+  - [Install as a skill (recommended)](#install-as-a-skill-recommended)
+  - [Who this is for](#who-this-is-for)
+  - [Repo structure](#repo-structure)
+  - [The AI Cinematic Pipeline — from bare idea to deployed site](#the-ai-cinematic-pipeline--from-bare-idea-to-deployed-site)
+  - [Quick start — tell your agent to build this](#quick-start--tell-your-agent-to-build-this)
+  - [Which AI tool should you use](#which-ai-tool-should-you-use)
+  - [How to actually use this repo](#how-to-actually-use-this-repo)
+  - [Getting the best output from your AI agent](#getting-the-best-output-from-your-ai-agent)
+    - [1. Give it a conventions file before the first prompt](#1-give-it-a-conventions-file-before-the-first-prompt)
+    - [2. Name the exact reference — and name what to avoid](#2-name-the-exact-reference--and-name-what-to-avoid)
+    - [3. Ask for one section at a time, and look at each before continuing](#3-ask-for-one-section-at-a-time-and-look-at-each-before-continuing)
+    - [4. Make sure your agent can actually see what it built](#4-make-sure-your-agent-can-actually-see-what-it-built)
+    - [5. Let it pull real components instead of guessing at them](#5-let-it-pull-real-components-instead-of-guessing-at-them)
+    - [6. If your tool supports skills, load taste/UX ones before generating](#6-if-your-tool-supports-skills-load-tasteux-ones-before-generating)
+    - [7. Re-check performance after every new heavy section](#7-re-check-performance-after-every-new-heavy-section)
+  - [Choosing a stack by project type](#choosing-a-stack-by-project-type)
+  - [The recommended default stack](#the-recommended-default-stack)
+  - [Non-negotiable performance rules](#non-negotiable-performance-rules)
+  - [Recommended build order](#recommended-build-order)
+  - [Troubleshooting / FAQ](#troubleshooting--faq)
+  - [Keeping this handbook current](#keeping-this-handbook-current)
 
 ---
 
@@ -39,21 +48,21 @@ The whole handbook is also packaged as a `SKILL.md`-compatible skill at [`skills
 **Via Vercel's cross-agent skills CLI** (installs into Claude Code, Codex, Cursor, and 20+ other agents):
 
 ```bash
-npx skills add <your-github-username>/awesome-cinematic-web-dev
-npx skills add <your-github-username>/awesome-cinematic-web-dev -a codex   # target Codex directly
+npx skills add ygstudio-game/awesome-cinematic-web-dev
+npx skills add ygstudio-game/awesome-cinematic-web-dev -a codex   # target Codex directly
 ```
 
 **Manually (drop-in skill):**
 
 ```bash
-git clone https://github.com/<your-github-username>/awesome-cinematic-web-dev
+git clone https://github.com/ygstudio-game/awesome-cinematic-web-dev
 cp -R awesome-cinematic-web-dev/skills/cinematic-web-dev ~/.claude/skills/   # Claude Code
 cp -R awesome-cinematic-web-dev/skills/cinematic-web-dev ~/.codex/skills/    # Codex
 ```
 
 Once installed, just ask your agent for a cinematic landing page/product page/portfolio — it'll pick up the skill automatically (or invoke it explicitly, e.g. `/cinematic-web-dev` in Claude Code).
 
-> The `npx skills add` and `git clone` commands above assume this repo has been pushed to your own GitHub account — replace `<your-github-username>/awesome-cinematic-web-dev` with wherever you've published it. Until then, use the manual copy method by pointing `cp -R` at this local folder directly: `cp -R skills/cinematic-web-dev ~/.claude/skills/`.
+> The `npx skills add` and `git clone` commands above assume this repo has been pushed to your own GitHub account — replace `ygstudio-game/awesome-cinematic-web-dev` with wherever you've published it. Until then, use the manual copy method by pointing `cp -R` at this local folder directly: `cp -R skills/cinematic-web-dev ~/.claude/skills/`.
 
 ## Who this is for
 
